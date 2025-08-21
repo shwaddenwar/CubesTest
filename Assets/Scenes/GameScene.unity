@@ -404,7 +404,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1621,7 +1621,6 @@ GameObject:
   - component: {fileID: 1877870291}
   - component: {fileID: 1877870290}
   - component: {fileID: 1877870293}
-  - component: {fileID: 1877870294}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -1685,18 +1684,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8a25553309024c449ae81ec694398e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1877870294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877870289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d5cf9d3c905ac47a74d11c76772c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1904921338
