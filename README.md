@@ -5,6 +5,8 @@
 Небольшой проект сделанный как тестовое задание.  
 Смена разрешения при существующем сейве может вывести кубики за экран, в остальном должно хорошо масштабироваться.  
 Сейв в формате json находится в `Application.persistentDataPath`, для Windows это `[Диск]\Users\[User]\AppData\LocalLow\APodkopaev\Cubes`
+Для запуска в редакторе нужно открыть сцену `GameScene`
+
 
 ## Использованный стек
 Zenject, DOTween, Newtonsoft JSON, Addressables
