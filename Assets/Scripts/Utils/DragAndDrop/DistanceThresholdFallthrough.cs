@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Utils.DragAndDrop {
-    public class VerticalThresholdFallthrough : ScrollDragnDropFallthrough {
+    public class DistanceThresholdFallthrough : ScrollDragnDropFallthrough {
         [SerializeField] private float verticalThreshold;
         private Vector2 _dragStartOffset;
 

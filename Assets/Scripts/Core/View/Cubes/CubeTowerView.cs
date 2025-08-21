@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core.Model;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Core.View.Cubes {
@@ -11,11 +12,11 @@ namespace Core.View.Cubes {
         private Vector2 _startPosition;
         private List<CubePlacement> _placedCubes = new();
         private PlaceableCubeView.Pool _placeableCubePool;
-        private CubesModel _cubesModel;
+
+        private Vector3[] _cubeCorners = new Vector3[4];
 
         [Inject]
-        private void Construct(PlaceableCubeView.Pool placeableCubePool, CubesModel cubesModel) {
-            _cubesModel = cubesModel;
+        private void Construct(PlaceableCubeView.Pool placeableCubePool) {
             _placeableCubePool = placeableCubePool;
         }
 
@@ -24,7 +25,8 @@ namespace Core.View.Cubes {
             Vector2 placeAt;
             if (isFirstCube) {
                 var cubeTransform = cube.RectTransform;
-                _cubeSize = cubeTransform.sizeDelta;
+                _cubeSize = GetCubeSize(cubeTransform);
+                Debug.Log($"{_cubeSize.x}; {_cubeSize.y}");
                 _startPosition = atWorldPosition + GetNewPlacementOffset(offset) * Vector2.right;
                 placeAt = _startPosition;
             }
@@ -51,8 +53,7 @@ namespace Core.View.Cubes {
         }
 
         public Vector2 WorldToGameArea(Vector2 worldPosition) {
-            var screenPosition = RectTransformUtility.WorldToScreenPoint(Camera.current, worldPosition);
-            return gameArea.InverseTransformPoint(screenPosition);
+            return gameArea.InverseTransformPoint(worldPosition);
         }
 
         public Vector2 GameAreaToWorld(Vector2 gameAreaPos) {
@@ -60,14 +61,14 @@ namespace Core.View.Cubes {
         }
 
         public DropData GetDropData(Vector2 atPosition, RectTransform forCube) {
-            var forCubeSize = forCube.sizeDelta;
+            var forCubeSize = GetCubeSize(forCube);
 
             int cubesLeft;
             var lowerOffsetBound = float.MinValue;
             var upperOffsetBound = float.MaxValue;
 
-            var minCorner = gameArea.rect.min + forCubeSize / 2;
-            var maxCorner = gameArea.rect.max - forCubeSize / 2;
+            var minCorner = gameArea.rect.min + forCube.sizeDelta / 2;
+            var maxCorner = gameArea.rect.max - forCube.sizeDelta / 2;
             var minWorld = GameAreaToWorld(minCorner);
             var maxWorld = GameAreaToWorld(maxCorner);
             var resultPosition = atPosition;
@@ -90,6 +91,7 @@ namespace Core.View.Cubes {
                 WorldToGameArea(resultPosition));
             return result;
         }
+        
 
         public void HandleCubeRemoved(CubeRemoveResult cubeRemoveResult, int atIndex) {
             _placedCubes.RemoveAt(atIndex);
@@ -115,6 +117,11 @@ namespace Core.View.Cubes {
 
         public int GetPlacementIndexOf(PlaceableCubeView cubeView) {
             return _placedCubes.FindIndex(p => p.Cube == cubeView);
+        }
+
+        private Vector2 GetCubeSize(RectTransform cubeTransform) {
+            cubeTransform.GetWorldCorners(_cubeCorners);
+            return _cubeCorners[2] - _cubeCorners[0];
         }
 
         private float GetNewPlacementOffset(float offset) {

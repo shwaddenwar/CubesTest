@@ -11,6 +11,9 @@ namespace Utils.DragAndDrop {
 
         private void Awake() {
             target = GetComponent<IScrollDragnDropTarget>();
+            if (target is null) {
+                Debug.LogError($"Can't find target for ScrollDragnDropFallthrough on {gameObject.name}");
+            }
         }
 
         public void SetScrollTarget(ScrollRect scrollView) {
@@ -18,8 +21,11 @@ namespace Utils.DragAndDrop {
         }
 
         protected void StartDragTarget(PointerEventData eventData) {
-            ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.dropHandler);
-            targetScroll.StopMovement();
+            if (targetScroll) {
+                ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.dropHandler);
+                targetScroll.StopMovement();
+            }
+
             DragTarget = true;
             OnBeginDrag(eventData);
         }
@@ -30,7 +36,9 @@ namespace Utils.DragAndDrop {
                 return;
             }
 
-            ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.beginDragHandler);
+            if (targetScroll) {
+                ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.beginDragHandler);
+            }
         }
 
         public virtual void OnDrag(PointerEventData eventData) {
@@ -39,7 +47,9 @@ namespace Utils.DragAndDrop {
                 return;
             }
 
-            ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.dragHandler);
+            if (targetScroll) {
+                ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.dragHandler);
+            }
         }
 
         public virtual void OnEndDrag(PointerEventData eventData) {
@@ -49,7 +59,9 @@ namespace Utils.DragAndDrop {
                 return;
             }
 
-            ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.endDragHandler);
+            if (targetScroll) {
+                ExecuteEvents.Execute(targetScroll.gameObject, eventData, ExecuteEvents.endDragHandler);
+            }
         }
 
         private void OnDestroy() {
